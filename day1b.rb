@@ -31,7 +31,7 @@ def find(word, first)
     break if (first && i >= word.size) || (!first && i < 0)
     c = word[i]
     # puts "c: #{c}, (#{'0'.ord - c.ord})"
-    return c if c.ord - '0'.ord > 0 && c.ord - '0'.ord < 10
+    return c if c.ord - '0'.ord >= 0 && c.ord - '0'.ord < 10
     new_queue = LETTERS.map do |val, str|
       chars = str.chars
       chars = chars.reverse if first

@@ -6,7 +6,7 @@ def solve(arg)
     digit = ""
     word.each_char do |c|
       # puts "c: #{c}, (#{'0'.ord - c.ord})"
-      if c.ord - '0'.ord > 0 && c.ord - '0'.ord < 10
+      if c.ord - '0'.ord >= 0 && c.ord - '0'.ord < 10
         digit << c
         break
       end
@@ -14,7 +14,7 @@ def solve(arg)
     i = word.size - 1
     while i >= 0
       c = word[i]
-      if c.ord - '0'.ord > 0 && c.ord - '0'.ord < 10
+      if c.ord - '0'.ord >= 0 && c.ord - '0'.ord < 10
         digit << c
         break
       end
