@@ -63,6 +63,7 @@ end
 #   [seeds, maps]
 # end
 
+return if __FILE__ != $0
 # test_run("seeds: 79 14 55 13
 #
 # seed-to-soil map:

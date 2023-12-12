@@ -24,6 +24,7 @@ def solve(arg)
   end.map(&:to_i).sum
 end
 
+return if __FILE__ != $0
 # test_run("1abc2
 # pqr3stu8vwx
 # a1b2c3d4e5f

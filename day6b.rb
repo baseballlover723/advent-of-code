@@ -27,6 +27,7 @@ def parse_input(input)
   [time, distance]
 end
 
+return if __FILE__ != $0
 # test_run("Time:      7  15   30
 # Distance:  9  40  200")
 run(__FILE__)

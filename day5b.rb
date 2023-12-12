@@ -91,6 +91,7 @@ end
 #   [seeds, maps]
 # end
 
+return if __FILE__ != $0
 # def test(seed_range)
 #   mappings = [[30..60, 130]]
 #   r = get_next_seed(seed_range, mappings)

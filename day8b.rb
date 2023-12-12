@@ -48,6 +48,7 @@ def parse_input(input)
   [path_str.chars.map {|c| c == 'L' ? 0 : 1}, map.freeze]
 end
 
+return if __FILE__ != $0
 # test_run("LR
 #
 # 11A = (11B, XXX)

@@ -67,6 +67,7 @@ def parse_input(input)
   [split_input, parts]
 end
 
+return if __FILE__ != $0
 # test_run("*..
 # .1.
 # ...

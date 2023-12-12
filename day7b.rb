@@ -81,6 +81,7 @@ def convert_card(card)
   end
 end
 
+return if __FILE__ != $0
 # test_run("32T3K 765
 # T55J5 684
 # KK677 28

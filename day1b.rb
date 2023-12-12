@@ -50,6 +50,7 @@ def find(word, first)
   end
 end
 
+return if __FILE__ != $0
 # test_run("two1nine
 # eightwothree
 # abcone2threexyz
