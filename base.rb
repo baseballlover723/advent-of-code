@@ -1,10 +1,17 @@
+require "benchmark"
+
 def run(file_name)
   file_name = File.basename(file_name, File.extname(file_name))
   puts "solving \"#{file_name}\""
   input = File.read(file_name + "_input.txt").strip
-  result = solve(input)
+  result = nil
+  time = Benchmark.measure do
+    result = solve(input)
+  end
   puts "result"
   puts result.inspect
+  puts "                  user     system      total        real"
+  puts "time taken: #{time}"
 end
 
 def parse_input_into_map(arg)
