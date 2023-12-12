@@ -21,21 +21,28 @@ def solve(arg)
   maze[y][x] = start_char
   # puts "locations: #{locations}"
 
+  xs = x
+  xe = x
+  ys = y
+  ye = y
   seen = Set.new
   seen << [x, y]
-  steps = 1
-  run = true
-  while run do
+  loop do
     if locations[0][0] == locations[1][0] && locations[0][1] == locations[1][1]
+      xs = locations[0][0] if locations[0][0] < xs
+      xe = locations[0][0] if locations[0][0] > xe
+      ys = locations[0][1] if locations[0][1] < ys
+      ye = locations[0][1] if locations[0][1] > ye
       seen << [locations[0][0], locations[0][1]]
       break
     end
     locations.map! do |(x, y, direction)|
       # puts "steps: #{steps}, (#{x}, #{y}): #{maze[y][x]} -> #{direction}"
-      if !seen.add?([x, y])
-        run = false
-        break
-      end
+      xs = x if x < xs
+      xe = x if x > xe
+      ys = y if y < ys
+      ye = y if y > ye
+      seen << [x,y]
       case maze[y][x]
       when "|"
         direction == :north ? [x, y - 1, :north] : [x, y + 1, :south]
@@ -51,16 +58,15 @@ def solve(arg)
         direction == :north ? [x + 1, y, :east] : [x, y + 1, :south]
       end
     end
-    steps += 1
   end
   # puts "seen: #{seen}"
 
   area = 0
-  y = 0
-  while y <= max_y
+  y = ys
+  while y <= ye
     interior = false
-    x = 0
-    while x <= max_x
+    x = xs
+    while x <= xe
       # puts "(#{x}, #{y}): #{maze[y][x]}"
       if !seen.include?([x, y])
         # puts "(#{x}, #{y}): #{interior}" if interior
