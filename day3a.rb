@@ -1,5 +1,7 @@
 require "./base"
 
+ZERO = '0'.ord unless defined? ZERO
+
 def solve(arg)
   str_matrix, parts = parse_input(arg)
   # puts "parts: #{parts}"
@@ -7,12 +9,18 @@ def solve(arg)
 
   sum = 0
   str_matrix.each.with_index do |row, y|
+    found_symbol = false
     row.each_char.with_index do |c, x|
-      next if c == '.'
-      next if c.ord - '0'.ord >= 0 && c.ord - '0'.ord < 10
+      next if c == '.' || (c.ord - ZERO >= 0 && c.ord - ZERO.ord < 10)
       # puts "c: #{c}, (#{x}, #{y})"
+      if !found_symbol
+        numb_parts_to_trim = calc_parts_to_trim(parts, y)
+        parts.shift(numb_parts_to_trim)
+        found_symbol = true
+      end
       parts.reject! do |(numb, x_range, y_range)|
-        next false if !x_range.include?(x) || !y_range.include?(y)
+        break if y < y_range.begin
+        next false if !x_range.include?(x)
         # puts "adding numb: #{numb} because of #{c} at (#{x}, #{y})"
         sum += numb
         true
@@ -28,6 +36,12 @@ def solve(arg)
   sum
 end
 
+def calc_parts_to_trim(parts, y)
+  parts.bsearch_index do |(numb, x_range, y_range)|
+    y <= y_range.end
+  end || 0
+end
+
 def parse_input(input)
   parts = []
   split_input = input.split("\n")
@@ -35,7 +49,7 @@ def parse_input(input)
     start = nil
     current_numb = ""
     str.each_char.with_index do |c, i|
-      if c.ord - '0'.ord >= 0 && c.ord - '0'.ord < 10
+      if c.ord - ZERO >= 0 && c.ord - ZERO < 10
         if start.nil?
           start = i
           current_numb = c
@@ -61,7 +75,6 @@ def parse_input(input)
       ye = [y + 1, split_input.size - 1].min
       parts << [current_numb.to_i, (s..e), (ys..ye)]
     end
-
 
   end
   [split_input, parts]
