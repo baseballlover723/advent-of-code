@@ -2,7 +2,9 @@ require "benchmark"
 TIMES = 5
 
 def main
-  files = Dir["./day*.rb"].sort
+  files = Dir["./day*.rb"].sort_by do |file_name|
+    file_name[/\d+/].to_i
+  end
 
   puts "TIMES: #{TIMES}"
   files.each do |file_name|
