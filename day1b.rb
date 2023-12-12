@@ -1,16 +1,18 @@
 require "./base"
 
 LETTERS = {
-  1 => "one",
-  2 => "two",
-  3 => "three",
-  4 => "four",
-  5 => "five",
-  6 => "six",
-  7 => "seven",
-  8 => "eight",
-  9 => "nine",
+  "1" => "one".chars,
+  "2" => "two".chars,
+  "3" => "three".chars,
+  "4" => "four".chars,
+  "5" => "five".chars,
+  "6" => "six".chars,
+  "7" => "seven".chars,
+  "8" => "eight".chars,
+  "9" => "nine".chars,
 }
+
+LETTERS_REVERSED = LETTERS.map {|val, chars| [val, chars.reverse]}.to_h
 
 def solve(arg)
   # puts "arg: #{arg}"
@@ -21,32 +23,30 @@ def solve(arg)
 end
 
 def find(word, first)
-  queue = LETTERS.map do |val, str|
-    chars = str.chars
-    chars = chars.reverse if first
-    [chars, val.to_s]
+  map = first ? LETTERS : LETTERS_REVERSED
+  queue = map.map do |val, chars|
+    [chars, 0, val]
   end
   i = first ? 0 : word.size - 1
+  increment = first ? 1 : -1
   while true
     break if (first && i >= word.size) || (!first && i < 0)
     c = word[i]
     # puts "c: #{c}, (#{'0'.ord - c.ord})"
     return c if c.ord - '0'.ord >= 0 && c.ord - '0'.ord < 10
-    new_queue = LETTERS.map do |val, str|
-      chars = str.chars
-      chars = chars.reverse if first
-      [chars, val.to_s]
+    new_queue = map.map do |val, chars|
+      [chars, 0, val]
     end
     while !queue.empty?
-      chars_left, val = queue.pop
-      if chars_left[-1] == c
-        chars_left.pop
-        return val if chars_left.empty?
-        new_queue << [chars_left, val]
+      chars, ci, val = queue.pop
+      if chars[ci] == c
+        ci += 1
+        return val if ci == chars.size
+        new_queue << [chars, ci, val]
       end
     end
     queue = new_queue
-    i += first ? 1 : -1
+    i += increment
   end
 end
 
