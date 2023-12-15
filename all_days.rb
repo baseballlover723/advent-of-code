@@ -1,25 +1,60 @@
 require "benchmark"
-TIMES = 5
+require 'optparse'
+require "json"
 
-def main
+TIMES_PATH = "./times.json"
+SLOW_THRESHOLD = 0.100 # seconds
+
+options = {times: 5, slow: false}
+OptionParser.new do |opts|
+  opts.banner = "Usage: all_days.rb --times=5 --include-slow"
+
+  opts.on("-tTIMES", "--times=TIMES", "Run N number of times per script") do |numb|
+    options[:times] = numb.to_i
+  end
+
+  opts.on("-s", "--[no-]slow", "Run slow files") do |bool|
+    options[:slow] = bool
+  end
+end.parse!
+
+def main(times_path, times, include_slow)
   files = Dir["./day*.rb"].sort_by do |file_name|
     file_name[/\d+/].to_i
   end
 
-  puts "TIMES: #{TIMES}"
+  File.write(times_path, "{}") unless File.exist?(times_path)
+  times_json = JSON.parse(File.read(times_path))
+
+  puts "times: #{times}"
   files.each do |file_name|
+    human_file_name = File.basename(file_name, File.extname(file_name))
+    if !include_slow && times_json[human_file_name] && (times_json[human_file_name]["total_time"] / times_json[human_file_name]["times"]) > SLOW_THRESHOLD
+      print_time(times_json, times_path, human_file_name, nil, nil, nil, false)
+      next
+    end
     require file_name
-    file_name = File.basename(file_name, File.extname(file_name))
-    input = File.read(file_name[0..-2] + "_input.txt").strip
+    human_file_name = File.basename(file_name, File.extname(file_name))
+    input = File.read(human_file_name[0..-2] + "_input.txt").strip
     result = nil
     time = Benchmark.realtime do
-      TIMES.times do |_|
+      times.times do |_|
         result = solve(input)
       end
     end
-    puts "#{file_name}: #{to_human_duration(time / TIMES)} => #{result}"
-    puts if file_name.end_with?("b")
+    print_time(times_json, times_path, human_file_name, time, times, result, true)
   end
+end
+
+def print_time(times_json, times_path, file_name, total_time, times, result, actually_ran)
+  if actually_ran
+    times_json[file_name] = {total_time: total_time, times: times, result: result}
+    File.write(times_path, JSON.pretty_generate(times_json))
+  else
+    total_time, times, result = times_json[file_name].values_at("total_time", "times", "result")
+  end
+  puts "#{file_name}: #{to_human_duration(total_time / times)} => #{result}#{actually_ran ? "" : " (cached)"}"
+  puts if file_name.end_with?("b")
 end
 
 def to_human_duration(time)
@@ -38,4 +73,4 @@ def to_human_duration(time)
   str.reverse.sub(" ,", " and ".reverse).reverse
 end
 
-main
+main(TIMES_PATH, options[:times], options[:slow])
