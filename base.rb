@@ -29,51 +29,10 @@ def to_human_duration(time)
   str.reverse.sub(" ,", " and ".reverse).reverse
 end
 
-def parse_input_into_map(arg)
-  arg.split("\n")
-  # arg.split("\n").each do |input|
-  #   input.strip!
-  #   # puts "input: #{input}"
-  #   if input.start_with?(">")
-  #     # puts "nameline"
-  #     new_name = input[1..-1]
-  #     if name != ''
-  #       dnas[name] = dna
-  #     end
-  #     name = new_name
-  #     dna = ""
-  #   else
-  #     dna += input.strip
-  #   end
-  # end
-  # dnas[name] = dna
-  # # puts "dnas: #{dnas}"
-  #
-  # dnas
-end
-
-def parse_input_into_array(arg)
-  arg.split("\n")
-  # dnas = []
-  # dna = ""
-  # arg.split("\n").each do |input|
-  #   input.strip!
-  #   if input.start_with?(">")
-  #     dnas << dna unless dna.empty?
-  #     dna = ""
-  #   else
-  #     dna += input.strip
-  #   end
-  # end
-  # dnas << dna
-  # # puts "dnas: #{dnas}"
-  # dnas
-end
-
 def test_run(args)
   puts solve(args)
 end
 
-def solve(args)
+def solve(arg)
   raise "TO IMPLEMENT"
 end

@@ -58,3 +58,4 @@ build-iPhoneSimulator/
 .idea/
 *_input.txt
 times.json
+crystal/times_crystal.json
