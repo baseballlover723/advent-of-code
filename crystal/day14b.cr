@@ -177,7 +177,7 @@ class Day14b < Base
   end
 
   def parse_input(input)
-    input.split("\n").map do |str|
+    input.split('\n').map do |str|
       str.chars
     end
   end

@@ -134,11 +134,11 @@ class Day12b < Base
 
   def parse_input(input)
     multi = 5
-    input.split("\n").map do |str|
-      springs, numbs = str.split(" ")
+    input.split('\n').map do |str|
+      springs, numbs = str.split(' ')
       springs = (springs + '?') * multi
       springs = springs[0..-2]
-      {springs.chars, numbs.split(",").map(&.to_i) * multi}
+      {springs.chars, numbs.split(',').map(&.to_i) * multi}
     end
   end
 end

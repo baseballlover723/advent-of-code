@@ -121,7 +121,7 @@ class Day14c < Base
   end
 
   def parse_input(input)
-    input.split("\n")
+    input.split('\n')
   end
 end
 

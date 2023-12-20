@@ -132,9 +132,9 @@ class Day12a < Base
   # end
 
   def parse_input(input)
-    input.split("\n").map do |str|
-      springs, numbs = str.split(" ")
-      [springs.chars, numbs.split(",").map(&.to_i)]
+    input.split('\n').map do |str|
+      springs, numbs = str.split(' ')
+      [springs.chars, numbs.split(',').map(&.to_i)]
     end
   end
 end
