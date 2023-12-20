@@ -53,8 +53,8 @@ def print_time(times_json, times_path, file_name, total_time, times, result, act
   else
     total_time, times, result = times_json[file_name].values_at("total_time", "times", "result")
   end
+  puts if file_name.end_with?("a")
   puts "#{file_name}: #{to_human_duration(total_time / times)} => #{result}#{actually_ran ? "" : " (cached)"}"
-  puts if file_name.end_with?("b")
 end
 
 def to_human_duration(time)

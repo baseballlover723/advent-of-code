@@ -58,8 +58,8 @@ def print_time(times_json, times_path, file_name, total_time, times, result, act
   else
     total_time, times, result = [:total_time, :times, :result].map { |arg| times_json[file_name][opt_level][arg] }
   end
+  puts if file_name.ends_with?("a")
   puts "#{file_name} (#{opt_level}): #{Base.to_human_duration(total_time / times)} => #{result}#{actually_ran ? "" : " (cached)"}"
-  puts if file_name.ends_with?("b")
 end
 
 main(scripts, TIMES_PATH, options[:times], options[:slow])
