@@ -39,9 +39,9 @@ def hash(str)
 end
 
 def parse_input(input)
-  input.split(",").map do |str|
+  input.split(',').map do |str|
     next [str[0..-2], nil] if str.end_with?('-')
-    split = str.split("=")
+    split = str.split('=')
     [split[0], split[1].to_i]
   end
 end

@@ -18,7 +18,7 @@ def find_zeros(time, distance)
 end
 
 def parse_input(input)
-  time, distance = input.split("\n").map {|str| str.split(":")[1].split(/\s+/).join("").to_i}
+  time, distance = input.split("\n").map {|str| str.split(':')[1].split(/\s+/).join("").to_i}
 
   # puts "times: #{times}"
   # puts "distances: #{distances}"

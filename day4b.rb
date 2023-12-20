@@ -19,14 +19,14 @@ end
 def parse_input(input)
   cards = {}
   input.split("\n").each do |card_str|
-    id_str, numbs_str = card_str.split(":")
+    id_str, numbs_str = card_str.split(':')
     id = id_str[/\d+/].to_i
     card = {winning: Set.new, numbers: Set.new}
-    winning_str, numbers_str = numbs_str.split("|")
-    winning_str.split(" ").each do |win|
+    winning_str, numbers_str = numbs_str.split('|')
+    winning_str.split(' ').each do |win|
       card[:winning] << win.strip.to_i
     end
-    numbers_str.split(" ").each do |numb|
+    numbers_str.split(' ').each do |numb|
       card[:numbers] << numb.strip.to_i
     end
     cards[id] = card

@@ -110,7 +110,7 @@ def calc_load(rocks, width)
   sum = 0
   y = 1
   rocks.to_s(2).reverse.each_char.each_slice(width) do |row|
-    sum += row.count("1") * y
+    sum += row.count('1') * y
     y += 1
   end
   sum

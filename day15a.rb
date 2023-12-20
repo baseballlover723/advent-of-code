@@ -24,7 +24,7 @@ def hash(str)
 end
 
 def parse_input(input)
-  input.split(",")
+  input.split(',')
 end
 
 return if __FILE__ != $0

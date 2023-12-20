@@ -26,8 +26,8 @@ def helper(chars, numbs)
         next
       end
 
-      if ni < numbs.size && !expdot && ["#", "?"].freeze.include?(chars[ci])
-        if cc == 0 && chars[ci] == "?"
+      if ni < numbs.size && !expdot && ['#', '?'].freeze.include?(chars[ci])
+        if cc == 0 && chars[ci] == '?'
           n_states[[ci + 1, ni, cc, expdot]] += count
         end
         cc += 1
@@ -37,7 +37,7 @@ def helper(chars, numbs)
           expdot = true
         end
         n_states[[ci + 1, ni, cc, expdot]] += count
-      elsif cc == 0 && [".", "?"].freeze.include?(chars[ci])
+      elsif cc == 0 && ['.', '?'].freeze.include?(chars[ci])
         expdot = false
         n_states[[ci + 1, ni, cc, expdot]] += count
       end
@@ -58,8 +58,8 @@ end
 #     # puts "str: #{str}, numbs: #{numbs}"
 #     # cache = {}
 #     # print "starting #{id}\n"
-#     bads_left_to_place = numbs.sum - str.count("#")
-#     r = memoized_helper(cache, str, numbs, numbs.sum + numbs.cize - 1, bads_left_to_place, str.count("?"))
+#     bads_left_to_place = numbs.sum - str.count('#')
+#     r = memoized_helper(cache, str, numbs, numbs.sum + numbs.cize - 1, bads_left_to_place, str.count('?'))
 #     # print "done with #{id}\n"
 #     r
 #     # break
@@ -90,8 +90,8 @@ end
 #   $hash[[chars, numbs]] += 1
 #   return numbs.empty? ? 1 : 0 if chars.empty?
 #   if numbs.empty?
-#     # puts("no more bads left, but found some in rest of chars (#{chars}), returning 0") or return 0 if chars.any?("#")
-#     return 0 if chars.any?("#")
+#     # puts("no more bads left, but found some in rest of chars (#{chars}), returning 0") or return 0 if chars.any?('#')
+#     return 0 if chars.any?('#')
 #     # puts("no more bads left, and none found in rest of chars (#{chars}), returning 1")
 #     return 1
 #   end
@@ -99,9 +99,9 @@ end
 #
 #   # puts "checking"
 #   case chars[0]
-#   when "."
+#   when '.'
 #     memoized_helper(cache, chars[1..-1] || [], numbs, numbs_left, bads_left_to_place, unknowns_left)
-#   when "#"
+#   when '#'
 #     numb, *new_numbs = numbs
 #
 #     valid, unknowns = validate_bad_run(chars, numb)
@@ -110,20 +110,20 @@ end
 #     return 0 if !valid
 #
 #     memoized_helper(cache, chars[(numb + 1)..-1] || [], new_numbs, numbs_left - 1 - numb, bads_left_to_place - unknowns, unknowns_left - unknowns)
-#   when "?"
-#     memoized_helper(cache, ["."] + (chars[1..-1] || []), numbs, numbs_left, bads_left_to_place, unknowns_left - 1) + memoized_helper(cache, ["#"] + (chars[1..-1] || []), numbs, numbs_left, bads_left_to_place - 1, unknowns_left - 1)
+#   when '?'
+#     memoized_helper(cache, ['.'] + (chars[1..-1] || []), numbs, numbs_left, bads_left_to_place, unknowns_left - 1) + memoized_helper(cache, ['#'] + (chars[1..-1] || []), numbs, numbs_left, bads_left_to_place - 1, unknowns_left - 1)
 #   end
 # end
 #
 # def validate_bad_run(chars, numb)
 #   unknowns = 0
 #
-#   return [false, unknowns] if chars[numb] == "#"
+#   return [false, unknowns] if chars[numb] == '#'
 #   (0..(numb - 1)).each do |i|
 #     case chars[i]
-#     when "."
+#     when '.'
 #       return [false, unknowns]
-#     when "?"
+#     when '?'
 #       unknowns += 1
 #     end
 #   end
@@ -132,8 +132,8 @@ end
 
 def parse_input(input)
   input.split("\n").map do |str|
-    springs, numbs = str.split(" ")
-    [springs.chars, numbs.split(",").map(&:to_i)]
+    springs, numbs = str.split(' ')
+    [springs.chars, numbs.split(',').map(&:to_i)]
   end
 end
 

@@ -25,7 +25,7 @@ def sort_hands(hands)
 end
 
 def parse_input(input)
-  hands = input.split("\n").map {|str| str.split(" ")}.map do |hand_str, bid_str|
+  hands = input.split("\n").map {|str| str.split(' ')}.map do |hand_str, bid_str|
     cards = hand_str.chars.map {|card| convert_card(card)}
     rank = calc_rank(cards)
     [hand_str, bid_str.to_i, cards, rank]
@@ -59,15 +59,15 @@ def convert_card(card)
   int = card.to_i
   return int if int != 0
   case card
-  when "T"
+  when 'T'
     10
-  when "J"
+  when 'J'
     11
-  when "Q"
+  when 'Q'
     12
-  when "K"
+  when 'K'
     13
-  when "A"
+  when 'A'
     14
   end
 end

@@ -30,7 +30,7 @@ def calc_next(vals)
 end
 
 def parse_input(input)
-  input.split("\n").map { |str| str.split(" ").map(&:to_i) }
+  input.split("\n").map { |str| str.split(' ').map(&:to_i) }
 end
 
 return if __FILE__ != $0

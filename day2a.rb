@@ -22,14 +22,14 @@ end
 def parse_input(input)
   games = {}
   input.split("\n").each do |str|
-    id_str, draws_str = str.split(":")
+    id_str, draws_str = str.split(':')
     id = id_str[/\d+/].to_i
     # puts "id: #{id}"
     draws = []
-    draws_str.split(";").each do |draw_str|
+    draws_str.split(';').each do |draw_str|
       draw = Hash.new(0)
-      draw_str.strip.split(",").each do |d_str|
-        count_str, color = d_str.strip.split(" ")
+      draw_str.strip.split(',').each do |d_str|
+        count_str, color = d_str.strip.split(' ')
         draw[color] = count_str.to_i
       end
       draws << draw

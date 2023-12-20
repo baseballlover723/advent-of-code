@@ -50,13 +50,13 @@ def shift_field_north!(field)
     # puts "\nslots: #{slots}"
     row.each_with_index do |val, x|
       case val
-      when "#"
+      when '#'
         slots[x] = y + 1
-      when "O"
+      when 'O'
         if slots[x] != y
           # puts "moving col #{x} from y #{y} -> #{slots[x]}"
-          field[slots[x]][x] = "O"
-          field[y][x] = "."
+          field[slots[x]][x] = 'O'
+          field[y][x] = '.'
         end
         slots[x] += 1
       end
@@ -72,13 +72,13 @@ def shift_field_west!(field)
     field.each_with_index do |row, y|
       val = row[x]
       case val
-      when "#"
+      when '#'
         slots[y] = x + 1
-      when "O"
+      when 'O'
         if slots[y] != x
           # puts "moving row #{y} from x #{x} -> #{slots[y]}"
-          field[y][slots[y]] = "O"
-          field[y][x] = "."
+          field[y][slots[y]] = 'O'
+          field[y][x] = '.'
         end
         slots[y] += 1
       end
@@ -97,13 +97,13 @@ def shift_field_south!(field)
     # puts "y: #{y}"
     row.each_with_index do |val, x|
       case val
-      when "#"
+      when '#'
         slots[x] = y - 1
-      when "O"
+      when 'O'
         if slots[x] != y
           # puts "moving col #{x} from y #{y} -> #{slots[x]}"
-          field[slots[x]][x] = "O"
-          field[y][x] = "."
+          field[slots[x]][x] = 'O'
+          field[y][x] = '.'
         end
         slots[x] -= 1
       end
@@ -121,13 +121,13 @@ def shift_field_east!(field)
     field.each_with_index do |row, y|
       val = row[x]
       case val
-      when "#"
+      when '#'
         slots[y] = x - 1
-      when "O"
+      when 'O'
         if slots[y] != x
           # puts "moving row #{y} from x #{x} -> #{slots[y]}"
-          field[y][slots[y]] = "O"
-          field[y][x] = "."
+          field[y][slots[y]] = 'O'
+          field[y][x] = '.'
         end
         slots[y] -= 1
       end
@@ -141,7 +141,7 @@ def calc_load(field)
   max_y = field.size
   field.each_with_index do |row, y|
     row.each do |val|
-      sum += max_y - y if val == "O"
+      sum += max_y - y if val == 'O'
     end
   end
   sum

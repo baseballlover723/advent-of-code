@@ -15,9 +15,9 @@ def calc_load(field)
   field.each_with_index do |row, y|
     row.each_with_index do |val, x|
       case val
-      when "#"
+      when '#'
         slots[x] = max_y - y - 1
-      when "O"
+      when 'O'
         sum += slots[x]
         slots[x] -= 1
       end

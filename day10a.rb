@@ -26,17 +26,17 @@ def solve(arg)
       # puts "steps: #{steps}, (#{x}, #{y}): #{maze[y][x]} -> #{direction}"
       # return steps if !seen.add?([x, y])
       case maze[y][x]
-      when "|"
+      when '|'
         direction == :north ? [x, y - 1, :north] : [x, y + 1, :south]
-      when "-"
+      when '-'
         direction == :east ? [x + 1, y, :east] : [x - 1, y, :west]
-      when "L"
+      when 'L'
         direction == :south ? [x + 1, y, :east] : [x, y - 1, :north]
-      when "J"
+      when 'J'
         direction == :south ? [x - 1, y, :west] : [x, y - 1, :north]
-      when "7"
+      when '7'
         direction == :north ? [x - 1, y, :west] : [x, y + 1, :south]
-      when "F"
+      when 'F'
         direction == :north ? [x + 1, y, :east] : [x, y + 1, :south]
       end
     end

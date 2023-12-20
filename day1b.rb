@@ -1,15 +1,15 @@
 require "./base"
 
 LETTERS = {
-  "1" => "one".chars,
-  "2" => "two".chars,
-  "3" => "three".chars,
-  "4" => "four".chars,
-  "5" => "five".chars,
-  "6" => "six".chars,
-  "7" => "seven".chars,
-  "8" => "eight".chars,
-  "9" => "nine".chars,
+  '1' => "one".chars,
+  '2' => "two".chars,
+  '3' => "three".chars,
+  '4' => "four".chars,
+  '5' => "five".chars,
+  '6' => "six".chars,
+  '7' => "seven".chars,
+  '8' => "eight".chars,
+  '9' => "nine".chars,
 }
 
 LETTERS_REVERSED = LETTERS.map {|val, chars| [val, chars.reverse]}.to_h

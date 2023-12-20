@@ -53,16 +53,16 @@ def parse_input(input)
   maps = []
 
   top_split = input.split("\n\n")
-  seeds = top_split.shift.split(":")[1].split(" ").map(&:to_i).each_slice(2).map do |start, length|
+  seeds = top_split.shift.split(':')[1].split(' ').map(&:to_i).each_slice(2).map do |start, length|
     (start..(start+length-1))
   end
   top_split.each do |map_str|
     name_str, *value_strs = map_str.split("\n")
     # puts "value_str: #{value_strs.inspect}"
-    name =  name_str[0..(name_str.index(" "))]
+    name =  name_str[0..(name_str.index(' '))]
     # puts "from: #{from}, to: #{to}"
     values = value_strs.reduce([]) do |acc, value_str|
-      dst, src, range = value_str.split(" ").map(&:to_i)
+      dst, src, range = value_str.split(' ').map(&:to_i)
       acc << [(src..(src + range - 1)), dst]
       acc
     end
@@ -75,15 +75,15 @@ end
 #   maps = Hash.new() {|hsh, k| hsh[k] = Hash.new() {|hsh2, k2| hsh2[k2] = []}}
 #
 #   top_split = input.split("\n\n")
-#   seeds = top_split.shift.split(":")[1].split(" ").map(&:to_i)
+#   seeds = top_split.shift.split(':')[1].split(' ').map(&:to_i)
 #   top_split.each do |map_str|
 #     name_str, *value_strs = map_str.split("\n")
 #     # puts "value_str: #{value_strs.inspect}"
-#     from, to =  name_str[0..(name_str.index(" "))].split("-to-")
+#     from, to =  name_str[0..(name_str.index(' '))].split("-to-")
 #     # puts "from: #{from}, to: #{to}"
 #     values = maps[from][to]
 #     value_strs.each do |value_str|
-#       dst, src, range = value_str.split(" ").map(&:to_i)
+#       dst, src, range = value_str.split(' ').map(&:to_i)
 #       values << [(src..(src + range - 1)), dst]
 #     end
 #   end

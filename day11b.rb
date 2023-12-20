@@ -21,10 +21,10 @@ def parse_input(input)
   space = input.split("\n")
 
   empty_cols = (0...space[0].size).to_a.select do |i|
-    space.all? {|row| row[i] == "."}
+    space.all? {|row| row[i] == '.'}
   end
   empty_rows = (0...space.size).select do |i|
-    !space[i].index("#")
+    !space[i].index('#')
     # row.all? {|c| c == '.'}
   end
   # puts "empty_cols: #{empty_cols}"
@@ -45,7 +45,7 @@ def parse_input(input)
     offset_x = 0
     ix = 0
     last_i = 0
-    while (x = row.index("#", last_i))
+    while (x = row.index('#', last_i))
       last_i = x + 1
       while ix < empty_cols.size && x >= empty_cols[ix]
         offset_x += expansion

@@ -44,17 +44,17 @@ def solve(arg)
       ye = y if y > ye
       seen << [x,y]
       case maze[y][x]
-      when "|"
+      when '|'
         direction == :north ? [x, y - 1, :north] : [x, y + 1, :south]
-      when "-"
+      when '-'
         direction == :east ? [x + 1, y, :east] : [x - 1, y, :west]
-      when "L"
+      when 'L'
         direction == :south ? [x + 1, y, :east] : [x, y - 1, :north]
-      when "J"
+      when 'J'
         direction == :south ? [x - 1, y, :west] : [x, y - 1, :north]
-      when "7"
+      when '7'
         direction == :north ? [x - 1, y, :west] : [x, y + 1, :south]
-      when "F"
+      when 'F'
         direction == :north ? [x + 1, y, :east] : [x, y + 1, :south]
       end
     end
@@ -74,24 +74,24 @@ def solve(arg)
         x += 1
         next
       end
-      if maze[y][x] == "|"
+      if maze[y][x] == '|'
         interior = !interior
         # puts "flipping (#{x}, #{y}): #{interior}"
-      elsif maze[y][x] == "F"
+      elsif maze[y][x] == 'F'
         x += 1
-        while maze[y][x] == "-"
+        while maze[y][x] == '-'
           x += 1
         end
-        if maze[y][x] == "J"
+        if maze[y][x] == 'J'
           interior = !interior
           # puts "flipping (#{x}, #{y}): #{interior}"
         end
-      elsif maze[y][x] == "L"
+      elsif maze[y][x] == 'L'
         x += 1
-        while maze[y][x] == "-"
+        while maze[y][x] == '-'
           x += 1
         end
-        if maze[y][x] == "7"
+        if maze[y][x] == '7'
           interior = !interior
           # puts "flipping (#{x}, #{y}): #{interior}"
         end
@@ -106,17 +106,17 @@ end
 def calc_start_char(locations)
   case [locations[0][2], locations[1][2]]
   when [:west, :east]
-    "-"
+    '-'
   when [:west, :north]
-    "J"
+    'J'
   when [:west, :south]
-    "7"
+    '7'
   when [:east, :north]
-    "L"
+    'L'
   when [:east, :south]
-    "F"
+    'F'
   when [:north, :south]
-    "|"
+    '|'
   end
 end
 
