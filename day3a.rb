@@ -11,7 +11,7 @@ def solve(arg)
   str_matrix.each.with_index do |row, y|
     found_symbol = false
     row.each_char.with_index do |c, x|
-      next if c == '.' || (c.ord - ZERO >= 0 && c.ord - ZERO.ord < 10)
+      next if c == '.' || (c.ord - ZERO >= 0 && c.ord - ZERO < 10)
       # puts "c: #{c}, (#{x}, #{y})"
       if !found_symbol
         numb_parts_to_trim = calc_parts_to_trim(parts, y)
