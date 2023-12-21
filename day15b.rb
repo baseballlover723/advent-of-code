@@ -6,7 +6,7 @@ def solve(arg)
 
   arr = Array.new(256) { [{},[]] }
   strs.each do |label, focal_length|
-    box = arr[hash(label)]
+    box = arr[my_hash(label)]
     if focal_length.nil?
       box[0].delete(label)
       box[1].delete(label)
@@ -27,15 +27,15 @@ def solve(arg)
   sum
 end
 
-def hash(str)
-  hash = 0
+def my_hash(str)
+  my_hash = 0
   str.each_char do |c|
-    hash += c.ord
-    hash *= 17
-    hash %= 256
+    my_hash += c.ord
+    my_hash *= 17
+    my_hash %= 256
   end
 
-  hash
+  my_hash
 end
 
 def parse_input(input)
@@ -47,6 +47,6 @@ def parse_input(input)
 end
 
 return if __FILE__ != $0
-# test_run("HASH")
+# test_run("my_hash")
 # test_run("rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7")
 run(__FILE__)
