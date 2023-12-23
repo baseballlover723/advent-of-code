@@ -1,0 +1,6 @@
+version: 2.0
+shards:
+  pairing_heap:
+    git: https://github.com/yxhuvud/pairing_heap.git
+    version: 0.4.0
+

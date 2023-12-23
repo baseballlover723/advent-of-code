@@ -1,0 +1,19 @@
+name: 
+version: 0.1.0
+
+# authors:
+#   - name <email@example.com>
+
+# description: |
+#   Short description of 
+
+dependencies:
+  pairing_heap:
+    github: yxhuvud/pairing_heap
+    version: ~> 0.4
+
+# development_dependencies:
+#   webmock:
+#     github: manastech/webmock.cr
+
+# license: MIT
