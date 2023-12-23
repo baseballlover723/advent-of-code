@@ -5,7 +5,7 @@ require "json"
 TIMES_PATH = "./times.json"
 SLOW_THRESHOLD = 0.100 # seconds
 
-options = {times: 5, slow: false}
+options = {times: 5, slow: false, prefix: /^day/}
 OptionParser.new do |opts|
   opts.banner = "Usage: all_days.rb --times=5 --include-slow"
 
@@ -16,9 +16,13 @@ OptionParser.new do |opts|
   opts.on("-s", "--[no-]slow", "Run slow files") do |bool|
     options[:slow] = bool
   end
+
+  opts.on("-o", "--only=str", "Only run files that start with the str") do |str|
+    options[:prefix] = /^day#{str}#{str[-1].match(/\D/) ? "" : "\\D"}/
+  end
 end.parse!
 
-def main(times_path, times, include_slow)
+def main(times_path, times, include_slow, prefix)
   files = Dir["./day*.rb"].sort_by do |file_name|
     file_name[/\d+/].to_i
   end
@@ -29,6 +33,7 @@ def main(times_path, times, include_slow)
   puts "times: #{times}"
   files.each do |file_name|
     human_file_name = File.basename(file_name, File.extname(file_name))
+    next unless human_file_name.start_with?(prefix)
     if !include_slow && times_json[human_file_name] && (times_json[human_file_name]["total_time"] / times_json[human_file_name]["times"]) > SLOW_THRESHOLD
       print_time(times_json, times_path, human_file_name, nil, nil, nil, false)
       next
@@ -73,4 +78,4 @@ def to_human_duration(time)
   str.reverse.sub(" ,", " and ".reverse).reverse
 end
 
-main(TIMES_PATH, options[:times], options[:slow])
+main(TIMES_PATH, options[:times], options[:slow], options[:prefix])

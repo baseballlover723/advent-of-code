@@ -10,7 +10,7 @@ scripts = [] of Base
 
 {{ run("./all_days_macro.cr") }}
 
-options = {times: 5, slow: false}
+options = {times: 5, slow: false, prefix: /^day/}
 OptionParser.new do |opts|
   opts.banner = "Usage: all_days.cr --times=5 --include-slow"
 
@@ -21,9 +21,13 @@ OptionParser.new do |opts|
   opts.on("-s", "--slow", "Run slow files") do |bool|
     options = options.merge({slow: true})
   end
+
+  opts.on("-o", "--only=str", "Only run files that start with the str") do |str|
+    options = options.merge({prefix: /^day#{str}#{str[-1].ascii_letter? ? "" : "\\D"}/})
+  end
 end.parse
 
-def main(scripts, times_path, times, include_slow)
+def main(scripts, times_path, times, include_slow, prefix)
   File.write(times_path, "{}") unless File.exists?(times_path)
   #  times_json = JSON.parse(File.read(times_path))
   times_json = Hash(String, Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128))).from_json(File.read(times_path))
@@ -32,6 +36,7 @@ def main(scripts, times_path, times, include_slow)
   opt_level = {{ flag?(:release) ? "release" : "normal" }}
   scripts.each do |script|
     human_file_name = script.name
+    next unless human_file_name.starts_with?(prefix)
     #    human_file_name = File.basename(file_name, File.extname(file_name))
     times_json[human_file_name] = {} of String => NamedTuple(total_time: Float64, times: Int32, result: Int128) unless times_json.has_key?(human_file_name)
     if !include_slow && times_json[human_file_name].has_key?(opt_level) &&
@@ -62,4 +67,4 @@ def print_time(times_json, times_path, file_name, total_time, times, result, act
   puts "#{file_name} (#{opt_level.rjust(7)}): #{Base.to_human_duration(total_time / times)} => #{result}#{actually_ran ? "" : " (cached)"}"
 end
 
-main(scripts, TIMES_PATH, options[:times], options[:slow])
+main(scripts, TIMES_PATH, options[:times], options[:slow], options[:prefix])
