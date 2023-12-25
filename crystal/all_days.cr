@@ -46,6 +46,7 @@ def main(scripts, times_path, times, include_slow, prefix)
     end
     input = File.read("../" + human_file_name[0..-2] + "_input.txt").strip
     result = uninitialized Int128
+    GC.collect
     time = Benchmark.realtime do
       times.times do |_|
         result = script.solve(input).to_i128

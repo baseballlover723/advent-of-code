@@ -42,6 +42,8 @@ def main(times_path, times, include_slow, prefix)
     human_file_name = File.basename(file_name, File.extname(file_name))
     input = File.read(human_file_name[0..-2] + "_input.txt").strip
     result = nil
+    GC.start
+    GC.compact
     time = Benchmark.realtime do
       times.times do |_|
         result = solve(input)
