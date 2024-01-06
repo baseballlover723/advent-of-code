@@ -3,7 +3,7 @@ require "./base"
 
 MAZE_CHARS = {'#' => 5, '.' => 4, '^' => 0, '<' => 1, 'v' => 2, '>' => 3} unless defined? MAZE_CHARS
 REVERSE_MAZE_CHARS = MAZE_CHARS.invert unless defined? REVERSE_MAZE_CHARS
-DIRECTIONS = [:north, :west, :south, :east] unless defined? DIRECTIONS
+DIRECTIONS_ARR = [:north, :west, :south, :east] unless defined? DIRECTIONS_ARR
 
 def solve(arg)
   maze = parse_input(arg)
@@ -63,7 +63,7 @@ def calc_graph(maze, max_y)
     x, y, steps, direction, last_id, reversible = queue.pop
     dir_val = maze[y][x]
     # puts "(#{x}, #{y}) #{direction}: #{steps}, last_id: #{last_id}, reversible: #{reversible}, dir_val: #{dir_val}"
-    next if dir_val != 4 && DIRECTIONS[dir_val] != direction
+    next if dir_val != 4 && DIRECTIONS_ARR[dir_val] != direction
     reversible = false if reversible && dir_val <= 3
     id = nodes[[x, y]]
     if id

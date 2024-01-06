@@ -2,7 +2,7 @@ require "./base"
 
 MAZE_CHARS = {'#' => 5, '.' => 4, '^' => 0, '<' => 1, 'v' => 2, '>' => 3} unless defined? MAZE_CHARS
 REVERSE_MAZE_CHARS = MAZE_CHARS.invert unless defined? REVERSE_MAZE_CHARS
-DIRECTIONS = [:north, :west, :south, :east] unless defined? DIRECTIONS
+DIRECTIONS_ARR = [:north, :west, :south, :east] unless defined? DIRECTIONS_ARR
 
 def solve(arg)
   maze = parse_input(arg)
@@ -63,7 +63,7 @@ def get_valid_next_locations(maze, x, y, new_steps, direction)
     val = maze[yy][xx]
     next false if val >= 5
     # puts "val: #{val}, new_direction: #{new_direction}"
-    val == 4 || DIRECTIONS[val] == new_direction
+    val == 4 || DIRECTIONS_ARR[val] == new_direction
   end
 end
 
