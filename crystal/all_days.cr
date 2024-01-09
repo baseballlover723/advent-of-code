@@ -3,7 +3,7 @@ require "option_parser"
 require "json"
 require "./base"
 
-TIMES_PATH     = "./times_crystal.json"
+TIMES_PATH     = {{"./times_crystal_#{Crystal::VERSION.gsub(/\./, "_").id}.json"}}
 SLOW_THRESHOLD = 0.100 # seconds
 
 scripts = [] of Base
@@ -32,7 +32,9 @@ def main(scripts, times_path, times, include_slow, prefix)
   #  times_json = JSON.parse(File.read(times_path))
   times_json = Hash(String, Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128))).from_json(File.read(times_path))
 
-  puts "times: #{times}"
+  puts "crystal: #{Crystal::VERSION}, times: #{times}"
+  total_time = 0
+  total_files = 0
   opt_level = {{ flag?(:release) ? "release" : "normal" }}
   scripts.each do |script|
     human_file_name = script.name
@@ -42,6 +44,8 @@ def main(scripts, times_path, times, include_slow, prefix)
     if !include_slow && times_json[human_file_name].has_key?(opt_level) &&
        (times_json[human_file_name][opt_level]["total_time"] / times_json[human_file_name][opt_level]["times"]) > SLOW_THRESHOLD
       print_time(times_json, times_path, human_file_name, nil, nil, nil, false)
+      total_files += 1
+      total_time += times_json[human_file_name][opt_level]["total_time"] / times_json[human_file_name][opt_level]["times"]
       next
     end
     input = File.read("../" + human_file_name[0..-2] + "_input.txt").strip
@@ -53,7 +57,11 @@ def main(scripts, times_path, times, include_slow, prefix)
       end
     end.total_seconds
     times_json = print_time(times_json, times_path, human_file_name, time, times, result, true)
+    total_files += 1
+    total_time += time / times
   end
+
+  puts "Took an average of #{Base.to_human_duration(total_time / total_files)} to run #{total_files} files (total_time: #{total_time})"
 end
 
 def print_time(times_json, times_path, file_name, total_time, times, result, actually_ran)

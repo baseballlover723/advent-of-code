@@ -2,7 +2,7 @@ require "benchmark"
 require 'optparse'
 require "json"
 
-TIMES_PATH = "./times.json"
+TIMES_PATH = "./times_ruby_#{RUBY_VERSION.gsub('.', '_')}.json"
 SLOW_THRESHOLD = 0.100 # seconds
 
 options = {times: 5, slow: false, prefix: /^day/}
@@ -24,18 +24,22 @@ end.parse!
 
 def main(times_path, times, include_slow, prefix)
   files = Dir["./day*.rb"].sort_by do |file_name|
-    file_name[/\d+/].to_i
+    [file_name[/\d+/].to_i, file_name]
   end
 
   File.write(times_path, "{}") unless File.exist?(times_path)
   times_json = JSON.parse(File.read(times_path))
 
-  puts "times: #{times}"
+  puts "ruby: #{RUBY_VERSION}, times: #{times}"
+  total_time = 0
+  total_files = 0
   files.each do |file_name|
     human_file_name = File.basename(file_name, File.extname(file_name))
     next unless human_file_name.start_with?(prefix)
     if !include_slow && times_json[human_file_name] && (times_json[human_file_name]["total_time"] / times_json[human_file_name]["times"]) > SLOW_THRESHOLD
       print_time(times_json, times_path, human_file_name, nil, nil, nil, false)
+      total_files += 1
+      total_time += times_json[human_file_name]["total_time"] / times_json[human_file_name]["times"]
       next
     end
     require file_name
@@ -50,7 +54,11 @@ def main(times_path, times, include_slow, prefix)
       end
     end
     times_json = print_time(times_json, times_path, human_file_name, time, times, result, true)
+    total_files += 1
+    total_time += time / times
   end
+
+  puts "Took an average of #{to_human_duration(total_time / total_files)} to run #{total_files} files (total_time: #{total_time})"
 end
 
 def print_time(times_json, times_path, file_name, total_time, times, result, actually_ran)
