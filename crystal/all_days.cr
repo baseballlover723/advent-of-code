@@ -52,13 +52,15 @@ def main(scripts, times_path, times, include_slow, prefix)
         result = script.solve(input).to_i128
       end
     end.total_seconds
-    print_time(times_json, times_path, human_file_name, time, times, result, true)
+    times_json = print_time(times_json, times_path, human_file_name, time, times, result, true)
   end
 end
 
 def print_time(times_json, times_path, file_name, total_time, times, result, actually_ran)
   opt_level = {{ flag?(:release) ? "release" : "normal" }}
   if actually_ran && !total_time.nil? && !times.nil? && !result.nil?
+    times_json = Hash(String, Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128))).from_json(File.read(times_path))
+    times_json[file_name] = {} of String => NamedTuple(total_time: Float64, times: Int32, result: Int128) unless times_json.has_key?(file_name)
     times_json[file_name][opt_level] = {total_time: total_time, times: times, result: result}
     File.write(times_path, times_json.to_pretty_json)
   else
@@ -66,6 +68,7 @@ def print_time(times_json, times_path, file_name, total_time, times, result, act
   end
   puts if file_name.ends_with?('a')
   puts "#{file_name} (#{opt_level.rjust(7)}): #{Base.to_human_duration(total_time / times)} => #{result}#{actually_ran ? "" : " (cached)"}"
+  times_json
 end
 
 main(scripts, TIMES_PATH, options[:times], options[:slow], options[:prefix])

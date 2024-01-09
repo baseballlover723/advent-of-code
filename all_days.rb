@@ -49,12 +49,13 @@ def main(times_path, times, include_slow, prefix)
         result = solve(input)
       end
     end
-    print_time(times_json, times_path, human_file_name, time, times, result, true)
+    times_json = print_time(times_json, times_path, human_file_name, time, times, result, true)
   end
 end
 
 def print_time(times_json, times_path, file_name, total_time, times, result, actually_ran)
   if actually_ran
+    times_json = JSON.parse(File.read(times_path))
     times_json[file_name] = {total_time: total_time, times: times, result: result}
     File.write(times_path, JSON.pretty_generate(times_json))
   else
@@ -62,6 +63,7 @@ def print_time(times_json, times_path, file_name, total_time, times, result, act
   end
   puts if file_name.end_with?("a")
   puts "#{file_name} (ruby)   : #{to_human_duration(total_time / times)} => #{result}#{actually_ran ? "" : " (cached)"}"
+  times_json
 end
 
 def to_human_duration(time)
