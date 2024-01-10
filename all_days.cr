@@ -50,9 +50,9 @@ end
 def run_year(scripts, times_path, times, include_slow, prefix, year)
   puts "\nyear #{year}"
   File.write(times_path, "{}") unless File.exists?(times_path)
-  times_json = Hash(String, Hash(String, Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128)))).from_json(File.read(times_path))
+  times_json = Hash(String, Hash(String, Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128 | String)))).from_json(File.read(times_path))
   if !times_json.has_key?(year)
-    times_json[year] = {} of String => Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128))
+    times_json[year] = {} of String => Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128 | String))
     File.write(times_path, times_json.to_pretty_json)
   end
   total_time = 0
@@ -61,7 +61,7 @@ def run_year(scripts, times_path, times, include_slow, prefix, year)
   scripts.each do |script|
     human_file_name = script.name
     next unless human_file_name.starts_with?(prefix)
-    times_json[year][human_file_name] = {} of String => NamedTuple(total_time: Float64, times: Int32, result: Int128) unless times_json[year].has_key?(human_file_name)
+    times_json[year][human_file_name] = {} of String => NamedTuple(total_time: Float64, times: Int32, result: Int128 | String) unless times_json[year].has_key?(human_file_name)
     if !include_slow && times_json[year][human_file_name].has_key?(opt_level) &&
        (times_json[year][human_file_name][opt_level]["total_time"] / times_json[year][human_file_name][opt_level]["times"]) > SLOW_THRESHOLD
       print_time(year, times_json, times_path, human_file_name, nil, nil, nil, false)
@@ -70,11 +70,11 @@ def run_year(scripts, times_path, times, include_slow, prefix, year)
       next
     end
     input = File.read(year + "/inputs/" + human_file_name[0..-2] + "_input.txt").strip
-    result = uninitialized Int128
+    result = uninitialized Int128 | String
     GC.collect
     time = Benchmark.realtime do
       times.times do |_|
-        result = script.solve(input).to_i128
+        result = convert_result(script.solve(input))
       end
     end.total_seconds
     times_json = print_time(year, times_json, times_path, human_file_name, time, times, result, true)
@@ -85,15 +85,25 @@ def run_year(scripts, times_path, times, include_slow, prefix, year)
   puts "Took an average of #{Base.to_human_duration(total_time / total_files)} to run #{total_files} files (total_time: #{total_time})"
 end
 
+def convert_result(result : String) : Int128 | String
+  result
+end
+
+def convert_result(result) : Int128 | String
+  result.to_i128
+end
+
 def print_time(year, times_json, times_path, file_name, total_time, times, result, actually_ran)
   opt_level = {{ flag?(:release) ? "release" : "normal" }}
   if actually_ran && !total_time.nil? && !times.nil? && !result.nil?
-    times_json = Hash(String, Hash(String, Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128)))).from_json(File.read(times_path))
-    times_json[year][file_name] = {} of String => NamedTuple(total_time: Float64, times: Int32, result: Int128) unless times_json[year].has_key?(file_name)
+    times_json = Hash(String, Hash(String, Hash(String, NamedTuple(total_time: Float64, times: Int32, result: Int128 | String)))).from_json(File.read(times_path))
+    times_json[year][file_name] = {} of String => NamedTuple(total_time: Float64, times: Int32, result: Int128 | String) unless times_json[year].has_key?(file_name)
     times_json[year][file_name][opt_level] = {total_time: total_time, times: times, result: result}
     File.write(times_path, times_json.to_pretty_json)
   else
-    total_time, times, result = [:total_time, :times, :result].map { |arg| times_json[year][file_name][opt_level][arg] }
+    {% for arg in {:total_time, :times, :result} %}
+      {{arg.id}} = times_json[year][file_name][opt_level][{{arg}}]
+    {% end %}
   end
   puts if file_name.ends_with?('a')
   puts "#{file_name} (#{opt_level.rjust(7)}): #{Base.to_human_duration(total_time / times)} => #{result}#{actually_ran ? "" : " (cached)"}"
