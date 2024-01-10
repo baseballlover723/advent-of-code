@@ -3,7 +3,7 @@ require "benchmark"
 def run(file_name)
   file_name = File.basename(file_name, File.extname(file_name))
   puts "solving \"#{file_name}\""
-  input = File.read(file_name[0..-2] + "_input.txt").strip
+  input = File.read("../inputs/" + file_name[0..-2] + "_input.txt").strip
   result = nil
   time = Benchmark.realtime do
     result = solve(input)

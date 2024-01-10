@@ -57,6 +57,6 @@ build-iPhoneSimulator/
 
 .idea/
 *_input.txt
-**/*.json
+*.json
 
-crystal/lib
+lib
